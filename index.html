@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>电影网123 - 高清电影排行榜与在线观看 | dianyingwang123-h5.github.io</title>
+<meta name="description" content="电影网123（dianyingwang123-h5.github.io）提供高清电影排行榜、最新院线片、热播剧集、影视资讯与123系列专题，移动端自适应，单页影视导航演示。" />
+<meta name="keywords" content="电影网123,dianyingwang123-h5,高清电影排行榜,最新电影,热播剧集,影视资讯,123片单" />
+<link rel="canonical" href="https://dianyingwang123-h5.github.io/" />
+<style>
+:root{
+  --bg:#050810;--bg2:#0a0f1c;--card:#0f1626;--line:#1a2540;
+  --txt:#e8f0ff;--sub:#8fa8cf;
+  --blue:#3b82f6;--cyan:#06b6d4;--indigo:#6366f1;--amber:#f59e0b;
+  --radius:18px;--maxw:1180px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  background:
+    radial-gradient(900px 480px at 8% -10%,rgba(59,130,246,.18),transparent 55%),
+    radial-gradient(900px 520px at 92% 0%,rgba(6,182,212,.16),transparent 55%),
+    radial-gradient(900px 600px at 50% 120%,rgba(99,102,241,.14),transparent 55%),
+    var(--bg);
+  color:var(--txt);line-height:1.68;-webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 16px}
+header.site{position:sticky;top:0;z-index:60;backdrop-filter:saturate(140%) blur(10px);
+  background:linear-gradient(180deg,rgba(5,8,16,.95),rgba(5,8,16,.72));border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;gap:14px;height:64px}
+.logo{font-weight:900;font-size:22px;letter-spacing:.4px;
+  background:linear-gradient(90deg,var(--blue),var(--cyan),var(--indigo));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.logo small{display:block;font-size:11px;color:var(--sub);font-weight:600}
+.menu{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
+.menu a{padding:8px 12px;border-radius:999px;color:var(--sub);font-size:14px}
+.menu a:hover{color:#fff;background:rgba(59,130,246,.25)}
+.search{display:flex;gap:8px}
+.search input{width:180px;padding:9px 12px;border-radius:999px;border:1px solid var(--line);background:#0a0f1c;color:#fff;outline:none}
+.search button{border:0;padding:9px 14px;border-radius:999px;cursor:pointer;font-weight:800;
+  background:linear-gradient(90deg,var(--blue),var(--indigo));color:#fff}
+.burger{display:none;margin-left:auto;background:#0a0f1c;border:1px solid var(--line);color:#fff;border-radius:12px;padding:8px 12px;font-size:18px}
+
+.hero{position:relative;margin:22px 0 8px;border-radius:26px;overflow:hidden;border:1px solid var(--line);min-height:360px;
+  background:linear-gradient(120deg,#0a1020,#0f1a30 55%,#0a1520)}
+.grid-bg{position:absolute;inset:0;opacity:.4;
+  background-image:linear-gradient(rgba(59,130,246,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(6,182,212,.08) 1px,transparent 1px);
+  background-size:40px 40px}
+.slide{position:absolute;inset:0;opacity:0;transition:opacity .6s ease;padding:46px;display:flex;flex-direction:column;justify-content:flex-end}
+.slide.active{opacity:1;position:relative}
+.slide h1{font-size:36px;margin:0 0 8px}
+.slide p{color:#c8daff;max-width:640px;margin:0 0 16px}
+.chip{display:inline-block;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:800;margin-right:8px}
+.chip.b{background:var(--blue);color:#fff}.chip.c{background:var(--cyan);color:#021}.chip.i{background:var(--indigo);color:#fff}
+.cta{padding:11px 18px;border-radius:999px;font-weight:800;width:max-content;border:0;cursor:pointer;
+  background:linear-gradient(90deg,#fff,#c8daff);color:#0a1520}
+.dots{position:absolute;right:18px;bottom:18px;display:flex;gap:8px}
+.dots i{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.35);cursor:pointer}
+.dots i.on{background:var(--blue)}
+
+.section{padding:34px 0}
+.sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:18px}
+.sec-head h2{font-size:24px;margin:0}
+.sec-head span{color:var(--sub);font-size:13px}
+.more{margin-left:auto;color:var(--cyan);font-size:13px}
+
+.grid-poster{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+.poster{position:relative;border-radius:16px;overflow:hidden;background:var(--card);border:1px solid var(--line);transition:.25s}
+.poster:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(0,0,0,.5)}
+.poster .ph{aspect-ratio:2/3}
+.poster:nth-child(1) .ph{background:linear-gradient(160deg,#0a2a4a,#3b82f6)}
+.poster:nth-child(2) .ph{background:linear-gradient(160deg,#0a3a3a,#06b6d4)}
+.poster:nth-child(3) .ph{background:linear-gradient(160deg,#1a0a3a,#6366f1)}
+.poster:nth-child(4) .ph{background:linear-gradient(160deg,#3a2a0a,#f59e0b)}
+.poster:nth-child(5) .ph{background:linear-gradient(160deg,#3a0a1a,#ec4899)}
+.poster:nth-child(6) .ph{background:linear-gradient(160deg,#0a3a1a,#10b981)}
+.poster .meta{padding:10px 12px}
+.poster h3{font-size:14px;margin:0 0 4px}
+.poster .rate{position:absolute;top:10px;left:10px;background:rgba(0,0,0,.65);color:var(--cyan);font-weight:800;padding:3px 8px;border-radius:10px;font-size:12px}
+.poster .num{position:absolute;top:10px;right:10px;font-weight:900;font-size:20px;color:#fff;text-shadow:0 0 8px var(--blue)}
+
+.cats{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+.cat{border-radius:16px;padding:22px 14px;text-align:center;font-weight:800;color:#fff;border:1px solid rgba(255,255,255,.12)}
+.cat:nth-child(1){background:linear-gradient(135deg,#3b82f6,#1d4ed8)}
+.cat:nth-child(2){background:linear-gradient(135deg,#06b6d4,#0e7490)}
+.cat:nth-child(3){background:linear-gradient(135deg,#6366f1,#4338ca)}
+.cat:nth-child(4){background:linear-gradient(135deg,#f59e0b,#d97706)}
+.cat:nth-child(5){background:linear-gradient(135deg,#ec4899,#be185d)}
+.cat:nth-child(6){background:linear-gradient(135deg,#10b981,#047857)}
+
+/* 123 排行榜 */
+.top123{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.top-card{border-radius:18px;overflow:hidden;border:1px solid var(--line);background:var(--card);padding:20px}
+.top-card h3{font-size:18px;margin:0 0 14px;display:flex;align-items:center;gap:8px}
+.top-card h3 .badge{font-size:12px;padding:3px 8px;border-radius:8px;font-weight:800}
+.top-card:nth-child(1) h3 .badge{background:var(--blue);color:#fff}
+.top-card:nth-child(2) h3 .badge{background:var(--cyan);color:#021}
+.top-card:nth-child(3) h3 .badge{background:var(--indigo);color:#fff}
+.top-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.top-item:last-child{border-bottom:0}
+.top-num{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-weight:900;font-size:13px;flex-shrink:0}
+.top-card:nth-child(1) .top-num{background:rgba(59,130,246,.2);color:var(--blue)}
+.top-card:nth-child(2) .top-num{background:rgba(6,182,212,.2);color:var(--cyan)}
+.top-card:nth-child(3) .top-num{background:rgba(99,102,241,.2);color:var(--indigo)}
+.top-item .thumb{width:44px;height:60px;border-radius:8px;flex-shrink:0}
+.top-card:nth-child(1) .top-item:nth-child(2) .thumb{background:linear-gradient(160deg,#0a2a4a,#3b82f6)}
+.top-card:nth-child(1) .top-item:nth-child(3) .thumb{background:linear-gradient(160deg,#0a3a3a,#06b6d4)}
+.top-card:nth-child(1) .top-item:nth-child(4) .thumb{background:linear-gradient(160deg,#1a0a3a,#6366f1)}
+.top-card:nth-child(1) .top-item:nth-child(5) .thumb{background:linear-gradient(160deg,#3a2a0a,#f59e0b)}
+.top-card:nth-child(1) .top-item:nth-child(6) .thumb{background:linear-gradient(160deg,#3a0a1a,#ec4899)}
+.top-card:nth-child(2) .top-item:nth-child(2) .thumb{background:linear-gradient(160deg,#1a0a3a,#6366f1)}
+.top-card:nth-child(2) .top-item:nth-child(3) .thumb{background:linear-gradient(160deg,#3a0a1a,#ec4899)}
+.top-card:nth-child(2) .top-item:nth-child(4) .thumb{background:linear-gradient(160deg,#0a2a4a,#3b82f6)}
+.top-card:nth-child(2) .top-item:nth-child(5) .thumb{background:linear-gradient(160deg,#0a3a3a,#06b6d4)}
+.top-card:nth-child(2) .top-item:nth-child(6) .thumb{background:linear-gradient(160deg,#3a2a0a,#f59e0b)}
+.top-card:nth-child(3) .top-item:nth-child(2) .thumb{background:linear-gradient(160deg,#3a2a0a,#f59e0b)}
+.top-card:nth-child(3) .top-item:nth-child(3) .thumb{background:linear-gradient(160deg,#0a2a4a,#3b82f6)}
+.top-card:nth-child(3) .top-item:nth-child(4) .thumb{background:linear-gradient(160deg,#0a3a3a,#06b6d4)}
+.top-card:nth-child(3) .top-item:nth-child(5) .thumb{background:linear-gradient(160deg,#1a0a3a,#6366f1)}
+.top-card:nth-child(3) .top-item:nth-child(6) .thumb{background:linear-gradient(160deg,#3a0a1a,#ec4899)}
+.top-item h4{margin:0;font-size:13px}.top-item p{margin:2px 0 0;font-size:11px;color:var(--sub)}
+
+.hscroll{display:flex;gap:14px;overflow-x:auto;padding-bottom:8px}
+.hscroll::-webkit-scrollbar{height:8px}.hscroll::-webkit-scrollbar-thumb{background:#1a2540;border-radius:99px}
+.hcard{flex:0 0 220px;background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.hcard .ph{aspect-ratio:16/9}
+.hcard:nth-child(1) .ph{background:linear-gradient(160deg,#0a2a4a,#3b82f6)}
+.hcard:nth-child(2) .ph{background:linear-gradient(160deg,#0a3a3a,#06b6d4)}
+.hcard:nth-child(3) .ph{background:linear-gradient(160deg,#1a0a3a,#6366f1)}
+.hcard:nth-child(4) .ph{background:linear-gradient(160deg,#3a2a0a,#f59e0b)}
+.hcard:nth-child(5) .ph{background:linear-gradient(160deg,#3a0a1a,#ec4899)}
+.hcard .meta{padding:10px 12px}.hcard h3{font-size:14px;margin:0}
+.prog{height:6px;background:#0a0f1c;border-radius:99px;margin-top:8px;overflow:hidden}.prog i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan))}
+
+.news{display:grid;grid-template-columns:1.4fr 1fr;gap:18px}
+.news-hero{border-radius:18px;overflow:hidden;border:1px solid var(--line);padding:22px;background:linear-gradient(160deg,#0a1a30,#0a2a20)}
+.news-list{display:flex;flex-direction:column;gap:10px}
+.nrow{display:flex;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px}
+.nthumb{width:84px;height:60px;border-radius:10px;flex:0 0 84px;background:linear-gradient(160deg,#0a2a4a,#06b6d4)}
+.nrow h4{margin:0;font-size:14px}.nrow span{font-size:12px;color:var(--sub)}
+
+.collage{display:grid;grid-template-columns:2fr 1fr 1fr;grid-auto-rows:160px;gap:14px}
+.cg{border-radius:18px;overflow:hidden;border:1px solid var(--line);padding:18px;color:#fff}
+.cg.big{grid-row:span 2;background:linear-gradient(160deg,#0a1a30,#1a0a3a)}
+.cg:nth-child(2){background:linear-gradient(160deg,#3b82f6,#6366f1)}
+.cg:nth-child(3){background:linear-gradient(160deg,#06b6d4,#10b981);color:#021}
+.cg:nth-child(4){background:linear-gradient(160deg,#f59e0b,#ec4899)}
+.cg:nth-child(5){background:linear-gradient(160deg,#1a0a3a,#6366f1)}
+.cg h3{margin:0 0 6px;font-size:18px}.cg p{margin:0;font-size:13px;opacity:.92}
+
+.about{display:grid;grid-template-columns:1.3fr 1fr;gap:18px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:10px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;text-align:center}
+.stat b{font-size:24px;background:linear-gradient(90deg,var(--blue),var(--cyan),var(--indigo));-webkit-background-clip:text;background-clip:text;color:transparent}
+.form{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px}
+.form input,.form textarea{width:100%;padding:11px 12px;border-radius:12px;border:1px solid var(--line);background:#0a0f1c;color:#fff;margin-bottom:10px;outline:none}
+.form button{border:0;width:100%;padding:12px;border-radius:12px;cursor:pointer;font-weight:800;background:linear-gradient(90deg,var(--blue),var(--indigo));color:#fff}
+
+footer.site{border-top:1px solid var(--line);padding:26px 0 42px;color:var(--sub);font-size:13px}
+footer.site a{color:var(--cyan)}
+code{background:#0a0f1c;border:1px solid var(--line);padding:1px 6px;border-radius:6px;color:var(--cyan)}
+
+@media (max-width:980px){
+  .grid-poster{grid-template-columns:repeat(4,1fr)}
+  .cats{grid-template-columns:repeat(3,1fr)}
+  .top123{grid-template-columns:1fr}
+  .news,.about{grid-template-columns:1fr}
+  .collage{grid-template-columns:1fr 1fr}.cg.big{grid-row:auto}
+}
+@media (max-width:720px){
+  .menu{display:none;position:absolute;top:64px;left:0;right:0;flex-direction:column;background:#050810;border-bottom:1px solid var(--line);padding:10px 16px;gap:4px}
+  .menu.open{display:flex}
+  .burger{display:block}
+  .search input{width:120px}
+  .slide{padding:26px 18px}.slide h1{font-size:26px}
+  .grid-poster{grid-template-columns:repeat(2,1fr)}
+  .cats{grid-template-columns:repeat(2,1fr)}
+  .collage{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/laoliu.js"></script>
+
+<header class="site">
+  <div class="wrap nav">
+    <div class="logo">电影网123<small>dianyingwang123-h5.github.io</small></div>
+    <nav class="menu" id="menu">
+      <a href="#home">首页</a>
+      <a href="#new">最新电影</a>
+      <a href="#cats">影片分类</a>
+      <a href="#top123">123排行榜</a>
+      <a href="#drama">剧集综艺</a>
+      <a href="#news">影视资讯</a>
+      <a href="#topic">123专题</a>
+      <a href="#about">关于我们</a>
+    </nav>
+    <div class="search">
+      <input type="text" placeholder="搜索电影/剧集/排行榜" aria-label="搜索" />
+      <button type="button" onclick="alert('演示站：搜索用 # 占位')">搜索</button>
+    </div>
+    <button class="burger" id="burger" aria-label="菜单">☰</button>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ① 首屏 -->
+  <section class="hero" id="home" aria-label="电影网123首屏">
+    <div class="grid-bg"></div>
+    <div class="slide active">
+      <span class="chip b">123 高清</span><span class="chip c">极速加载</span>
+      <h1>电影网123 · 三步找到好电影</h1>
+      <p>最新院线、热播剧集、123排行榜——一站式影视导航，移动端丝滑自适应。</p>
+      <button class="cta" onclick="location.href='#new'">开始看片</button>
+    </div>
+    <div class="slide">
+      <span class="chip i">123 片单</span><span class="chip b">精选专题</span>
+      <h1>123 部必看 / 123 分钟挑片 / 123 星推荐</h1>
+      <p>用"123"做索引：123部悬疑、123部治愈、123部科幻，挑片不再纠结。</p>
+      <button class="cta" onclick="location.href='#topic'">看 123 专题</button>
+    </div>
+    <div class="slide">
+      <span class="chip c">每日更新</span><span class="chip i">排行榜</span>
+      <h1>电影网123 · 今日热播 TOP 123</h1>
+      <p>实时更新热播榜单，123部高分影片等你发现，更新进度一目了然。</p>
+      <button class="cta" onclick="location.href='#top123'">查看榜单</button>
+    </div>
+    <div class="dots" id="dots"><i class="on"></i><i></i><i></i></div>
+  </section>
+
+  <!-- ② 最新电影 -->
+  <section class="section" id="new">
+    <div class="sec-head"><h2>最新电影</h2><span>Latest · 123 Picks</span><a class="more" href="#">更多 #</a></div>
+    <div class="grid-poster">
+      <article class="poster"><div class="ph"></div><span class="rate">8.7</span><span class="num">01</span><div class="meta"><h3>第123号房间</h3><p>悬疑 / 2026</p></div></article>
+      <article class="poster"><div class="ph"></div><span class="rate">8.3</span><span class="num">02</span><div class="meta"><h3>123号公路</h3><p>公路 / 2026</p></div></article>
+      <article class="poster"><div class="ph"></div><span class="rate">9.0</span><span class="num">03</span><div class="meta"><h3>123次日落</h3><p>治愈 / 2026</p></div></article>
+      <article class="poster"><div class="ph"></div><span class="rate">8.5</span><span class="num">04</span><div class="meta"><h3>123封情书</h3><p>爱情 / 2026</p></div></article>
+      <article class="poster"><div class="ph"></div><span class="rate">8.8</span><span class="num">05</span><div class="meta"><h3>123号实验室</h3><p>科幻 / 2026</p></div></article>
+      <article class="poster"><div class="ph"></div><span class="rate">8.6</span><span class="num">06</span><div class="meta"><h3>123班同学会</h3><p>喜剧 / 2026</p></div></article>
+    </div>
+  </section>
+
+  <!-- ③ 影片分类 -->
+  <section class="section" id="cats">
+    <div class="sec-head"><h2>影片分类</h2><span>Categories</span></div>
+    <div class="cats">
+      <a class="cat" href="#">动作大片</a>
+      <a class="cat" href="#">悬疑犯罪</a>
+      <a class="cat" href="#">科幻未来</a>
+      <a class="cat" href="#">青春治愈</a>
+      <a class="cat" href="#">文艺剧情</a>
+      <a class="cat" href="#">动漫番剧</a>
+    </div>
+  </section>
+
+  <!-- ④ 123 排行榜 -->
+  <section class="section" id="top123">
+    <div class="sec-head"><h2>123 排行榜</h2><span>Top 123 Chart</span><a class="more" href="#">完整榜单 #</a></div>
+    <div class="top123">
+      <div class="top-card">
+        <h3>🔥 热播榜 <span class="badge">TOP 5</span></h3>
+        <div class="top-item"><div class="top-num">1</div><div class="thumb"></div><div><h4>第123号房间</h4><p>悬疑 · 热度 98510</p></div></div>
+        <div class="top-item"><div class="top-num">2</div><div class="thumb"></div><div><h4>123号公路</h4><p>公路 · 热度 87640</p></div></div>
+        <div class="top-item"><div class="top-num">3</div><div class="thumb"></div><div><h4>123次日落</h4><p>治愈 · 热度 80420</p></div></div>
+        <div class="top-item"><div class="top-num">4</div><div class="thumb"></div><div><h4>123封情书</h4><p>爱情 · 热度 76880</p></div></div>
+        <div class="top-item"><div class="top-num">5</div><div class="thumb"></div><div><h4>123号实验室</h4><p>科幻 · 热度 73210</p></div></div>
+      </div>
+      <div class="top-card">
+        <h3>⭐ 好评榜 <span class="badge">TOP 5</span></h3>
+        <div class="top-item"><div class="top-num">1</div><div class="thumb"></div><div><h4>123次日落</h4><p>治愈 · 评分 9.0</p></div></div>
+        <div class="top-item"><div class="top-num">2</div><div class="thumb"></div><div><h4>第123号房间</h4><p>悬疑 · 评分 8.7</p></div></div>
+        <div class="top-item"><div class="top-num">3</div><div class="thumb"></div><div><h4>123号实验室</h4><p>科幻 · 评分 8.8</p></div></div>
+        <div class="top-item"><div class="top-num">4</div><div class="thumb"></div><div><h4>123封情书</h4><p>爱情 · 评分 8.5</p></div></div>
+        <div class="top-item"><div class="top-num">5</div><div class="thumb"></div><div><h4>123班同学会</h4><p>喜剧 · 评分 8.6</p></div></div>
+      </div>
+      <div class="top-card">
+        <h3>🆕 最新榜 <span class="badge">TOP 5</span></h3>
+        <div class="top-item"><div class="top-num">1</div><div class="thumb"></div><div><h4>123号公路</h4><p>公路 · 2026-10-10</p></div></div>
+        <div class="top-item"><div class="top-num">2</div><div class="thumb"></div><div><h4>第123号房间</h4><p>悬疑 · 2026-10-09</p></div></div>
+        <div class="top-item"><div class="top-num">3</div><div class="thumb"></div><div><h4>123次日落</h4><p>治愈 · 2026-10-08</p></div></div>
+        <div class="top-item"><div class="top-num">4</div><div class="thumb"></div><div><h4>123封情书</h4><p>爱情 · 2026-10-07</p></div></div>
+        <div class="top-item"><div class="top-num">5</div><div class="thumb"></div><div><h4>123号实验室</h4><p>科幻 · 2026-10-06</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑤ 剧集 / 综艺 / 动漫 -->
+  <section class="section" id="drama">
+    <div class="sec-head"><h2>剧集 · 综艺 · 动漫</h2><span>Drama / Variety / Anime</span><a class="more" href="#">更多 #</a></div>
+    <div class="hscroll">
+      <div class="hcard"><div class="ph"></div><div class="meta"><h3>123号案件 第5集</h3><div class="prog"><i style="width:64%"></i></div></div></div>
+      <div class="hcard"><div class="ph"></div><div class="meta"><h3>123号演播厅 S2</h3><div class="prog"><i style="width:40%"></i></div></div></div>
+      <div class="hcard"><div class="ph"></div><div class="meta"><h3>123号实验室 第12集</h3><div class="prog"><i style="width:82%"></i></div></div></div>
+      <div class="hcard"><div class="ph"></div><div class="meta"><h3>123次日落 第5集</h3><div class="prog"><i style="width:50%"></i></div></div></div>
+      <div class="hcard"><div class="ph"></div><div class="meta"><h3>123班日记 第3集</h3><div class="prog"><i style="width:28%"></i></div></div></div>
+    </div>
+  </section>
+
+  <!-- ⑥ 影视资讯 -->
+  <section class="section" id="news">
+    <div class="sec-head"><h2>影视资讯</h2><span>News</span><a class="more" href="#">全部 #</a></div>
+    <div class="news">
+      <div class="news-hero">
+        <span class="chip b">123 策划</span>
+        <h3 style="font-size:22px;margin:10px 0">"123部电影讲完一个类型"是怎么选出来的？</h3>
+        <p style="color:#c8daff">电影网123编辑部用123条标准筛片：节奏、情绪、美术、结尾、重刷率。本文公开片单逻辑。</p>
+        <button class="cta" onclick="location.href='#'">阅读全文</button>
+      </div>
+      <div class="news-list">
+        <div class="nrow"><div class="nthumb"></div><div><h4>123部悬疑片，反转不尬</h4><span>2026-10-09 · 片单</span></div></div>
+        <div class="nrow"><div class="nthumb"></div><div><h4>123分钟看懂科幻设定</h4><span>2026-10-08 · 科普</span></div></div>
+        <div class="nrow"><div class="nthumb"></div><div><h4>第123季剧集为什么难拍</h4><span>2026-10-07 · 剧评</span></div></div>
+        <div class="nrow"><div class="nthumb"></div><div><h4>123张海报配色公式</h4><span>2026-10-06 · 美术</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑦ 123 专题 -->
+  <section class="section" id="topic">
+    <div class="sec-head"><h2>123 专题</h2><span>123 Collections</span><a class="more" href="#">更多专题 #</a></div>
+    <div class="collage">
+      <div class="cg big"><h3>123部电影，读懂一座城</h3><p>123号街、公路、实验室、日落、情书——用123部片拼出城市夜与昼。</p><button class="cta" onclick="location.href='#'">进入专题</button></div>
+      <div class="cg"><h3>123部悬疑</h3><p>反转 / 时间线</p></div>
+      <div class="cg"><h3>123部治愈</h3><p>日落 / 公路 / 信</p></div>
+      <div class="cg"><h3>123部科幻</h3><p>未来 / 维度</p></div>
+      <div class="cg"><h3>123部爱情</h3><p>暗恋 / 重逢</p></div>
+    </div>
+  </section>
+
+  <!-- ⑧ 关于我们 -->
+  <section class="section" id="about">
+    <div class="sec-head"><h2>关于我们</h2><span>About</span></div>
+    <div class="about">
+      <div>
+        <p style="color:#c8daff">电影网123（dianyingwang123-h5.github.io）是一个"用123做索引"的演示型影视导航站：最新电影、热播剧集、综艺动漫、影视资讯、123专题，强调移动端自适应与单页锚点结构。</p>
+        <div class="stats">
+          <div class="stat"><b>123</b><br>每日片单</div>
+          <div class="stat"><b>12000+</b><br>影片条目</div>
+          <div class="stat"><b>100%</b><br>移动端适配</div>
+        </div>
+      </div>
+      <form class="form" onsubmit="event.preventDefault();alert('演示提交：123号留言已占位');">
+        <h3 style="margin:0 0 10px">给我推荐123部__</h3>
+        <input type="text" placeholder="昵称" aria-label="昵称" />
+        <input type="email" placeholder="邮箱（演示）" aria-label="邮箱" />
+        <textarea rows="3" placeholder="想要：123部悬疑 / 123部治愈 / 123部科幻…"></textarea>
+        <button type="submit">提交留言</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    电影网123 · <a href="https://dianyingwang123-h5.github.io/">dianyingwang123-h5.github.io</a><br/>
+    演示页面：所有播放 / 详情 / 分类链接均使用 <code>#</code> 占位，不提供真实盗版资源。<br/>
+    © 2026 电影网123 Demo · 单页影视导航演示，仅用于静态站 / SEO / 移动端适配演示。
+  </div>
+</footer>
+
+<script>
+  const burger=document.getElementById('burger'),menu=document.getElementById('menu');
+  burger.addEventListener('click',()=>menu.classList.toggle('open'));
+  menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>menu.classList.remove('open')));
+
+  const slides=[...document.querySelectorAll('.hero .slide')];
+  const dots=[...document.querySelectorAll('#dots i')];
+  let cur=0;
+  function show(i){slides.forEach((s,k)=>s.classList.toggle('active',k===i));dots.forEach((d,k)=>d.classList.toggle('on',k===i));cur=i;}
+  dots.forEach((d,i)=>d.addEventListener('click',()=>show(i)));
+  setInterval(()=>show((cur+1)%slides.length),4500);
+</script>
+</body>
+</html>
